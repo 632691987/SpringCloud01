@@ -1,0 +1,41 @@
+服务注册于发现 Eureka
+服务负载与调用 Netflix OSS / Ribbon / Netflix Feign
+服务熔断降级   Hystrix
+服务网管      Netflix OSS / Zuul
+服务分布式配置 Spring cloud config
+服务开发      Spring boot
+
+
+服务注册中心:
+1, Eureka ===> Stop update
+2, ZooKeeper
+3, Consul
+4, Nacos
+
+
+服务调用:
+1, Ribbon ===> Continue update
+2, LoadBalancer
+
+服务调用2:
+1, Feign ===> Stop update
+2, OpenFeign
+
+服务降级
+1, Hystrix ===> Stop update
+2, resilience4j
+3, Alibaba Sentinel
+
+服务网关
+1, Zuul ===> Stop update
+2, Zuul2 ===> Stop
+3, Gateway 主流和重点 Spring 推荐
+
+服务的配置
+1, Config ===> Stop
+2, Apolo 携程的
+3, Nacos
+
+服务总线
+1, Bus ===> Stop
+2, Nacos
