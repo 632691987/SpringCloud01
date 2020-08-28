@@ -41,6 +41,8 @@ hs_err_pid*
 ### Eclipse template
 .metadata
 bin/
+target/
+*/target/
 tmp/
 *.tmp
 *.bak
