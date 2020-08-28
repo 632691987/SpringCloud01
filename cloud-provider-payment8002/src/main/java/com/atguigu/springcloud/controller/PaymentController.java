@@ -1,6 +1,9 @@
 package com.atguigu.springcloud.controller;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +27,9 @@ public class PaymentController
     @Value("${server.port}")
     private int serverPort;
 
+    @Resource
+    private DiscoveryClient discoveryClient;
+
     @PostMapping(value = "/payment/create")
     public CommonResult create(@RequestBody  Payment payment) {
         int result = paymentService.create(payment);
@@ -43,5 +49,23 @@ public class PaymentController
         }else{
             return new CommonResult(HttpStatus.NOT_FOUND.value(),"没有对应记录,查询ID: "+id,null);
         }
+    }
+
+    @GetMapping(value = "/payment/discovery")
+    public Object discovery() {
+        List<String> services = discoveryClient.getServices();//获取所有注册过的服务
+        log.info("=================================================");
+        log.info("Part 1: =========================================");
+        for (String service : services) {
+            log.info("**** Service = " + service);
+        }
+        log.info("Part 2: =========================================");
+        List<ServiceInstance> list = discoveryClient.getInstances("cloud-payment-service".toUpperCase());
+        log.info("=========================================");
+        for (ServiceInstance serviceInstance : list) {
+            log.info(serviceInstance.getInstanceId() + "\t" + serviceInstance.getHost() + "\t" + serviceInstance.getPort() + "\t" + serviceInstance.getUri());
+        }
+        log.info("=================================================");
+        return this.discoveryClient;
     }
 }
