@@ -10,7 +10,8 @@ temp/
 classes/
 deploy/
 javadoc/
-
+.idea/
+*.iml
 # lock file, a part of Oracle Credential Store Framework
 cwallet.sso.lck
 ### Java template
