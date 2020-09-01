@@ -23,6 +23,48 @@ Eureka Client 客户端同时也具备一个内置的，使用轮询 (round-robi
 对于注册进 Eureka 里面的微服务，可以通过服务发现来获得该服务的信息
 ========================================================================================================================
 
+========================================================================================================================
+ZooKeeper 系列编
+Zookeeper 其实和 Eureka 一样是属于服务注册中心的系列。不同的是， Eureka 的服务器是嵌入到 Spring boot 里面的，而 Zookeeper 是个独立的服务器。
+
+在这个系列里面，包含 3 个组建:
+1) ZooKeeper 的独立服务器。
+2) cloud-provider-payment8004 | cloud-provider-payment8005
+3) cloud-consumerzk-order80
+
+Mapping-1) 建立独立服务器：
+1, 在 https://zookeeper.apache.org/releases.html 下载的
+2, 下载完后，解压缩。
+3, 然后创建 /conf/zoo.cfg 文件，内容如下：
+```
+tickTime = 2000
+dataDir = /home/vincent/software/zookeeper-3.4.9/data
+clientPort = 2181
+initLimit = 5
+syncLimit = 2
+```
+4, 顺带建立 /data 文件
+5, 启动服务器 bin/zkServer.sh start
+6, 启动客户端 bin/zkCli.sh -server 127.0.0.1:2181
+
+PS: 在客户端运行如下的知识点：
+A==> [ls xxx] 发现节点。如果有 1 服务端进来注册的话，会有多 1 个节点，然后节点之下还有节点，可以不断地访问，例如：
+[zk: localhost:2181(CONNECTED) 7] ls /services/cloud-provider-payment
+[3d14d10c-a577-4ad6-8f61-b8d453e4b4e2]
+直到上面的最后上面的流水号，代表的是 cloud-provider-payment 下的其中一个 node
+
+B==> 渠道流水单号以后，就这样做:
+get /services/cloud-provider-payment/3d14d10c-a577-4ad6-8f61-b8d453e4b4e2 这个其实是获取叶子节点的信息。一个叶子节点，代表一个 server node
+
+[zk: localhost:2181(CONNECTED) 2] ls /services/cloud-provider-payment
+[ca3bb75a-f034-4a74-a661-c3abde6785e4, 3d14d10c-a577-4ad6-8f61-b8d453e4b4e2]
+
+
+Mapping-2) cloud-provider-payment8004 | cloud-provider-payment8005 其实和 Eureka 差不多，参考就可以了
+Mapping-3) cloud-consumerzk-order80 其实和 Eureka 差不多，参考就可以了
+
+========================================================================================================================
+
 服务调用:
 1, Ribbon ===> Continue update
 2, LoadBalancer
