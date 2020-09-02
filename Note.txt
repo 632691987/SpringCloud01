@@ -64,6 +64,28 @@ Mapping-2) cloud-provider-payment8004 | cloud-provider-payment8005 其实和 Eur
 Mapping-3) cloud-consumerzk-order80 其实和 Eureka 差不多，参考就可以了
 
 ========================================================================================================================
+consul 的安装和运行
+安装很简单，上官网
+https://learn.hashicorp.com/tutorials/consul/get-started-install
+
+
+运行命令：
+consul agent -dev
+
+启动完后进入自带的网页：
+http://localhost:8500/ui/dc1/services
+
+涉及到的项目：
+cloud-providerconsul-payment8006
+========================================================================================================================
+CAP 的理论核心：
+一个分布式系统不可能同时满足一致性(C), 可用性(A) 和分区容错性(P)
+
+AP: Eureka
+CP: ZooKeeper, Consul
+
+对于zookeeper和Consul, 一次失效马上删除, 所以没有高可用性
+========================================================================================================================
 
 服务调用:
 1, Ribbon ===> Continue update
