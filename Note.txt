@@ -87,6 +87,22 @@ CP: ZooKeeper, Consul
 对于zookeeper和Consul, 一次失效马上删除, 所以没有高可用性
 ========================================================================================================================
 
+Ribbon
+Ribbon 是一个 load balance 的小工具。 Ribbon 和 NGINX 都是 load balancer, 但是 Ribbon 是用于客户端的， NGINX 是用于服务器端的
+其实 Eureka 的 client 就已经自带 Ribbon
+Ribbon 主要是有几条 Rule, 列表如下：
+
+1, BestAvailableRule
+2, RandomRule
+3, RetryRule
+4, RoundRobinRule (default)
+5, WeightedResponseTimeRule
+6, ZoneAvoidanceRule
+7, StickyRule (只返回一个实例)
+
+当然，也可以自己写一个 RULE
+========================================================================================================================
+
 服务调用:
 1, Ribbon ===> Continue update
 2, LoadBalancer
