@@ -25,7 +25,7 @@ public class PaymentController
     private PaymentService paymentService;
 
     @Value("${server.port}")
-    private int serverPort;
+    private String serverPort;
 
     @Resource
     private DiscoveryClient discoveryClient;
@@ -67,5 +67,11 @@ public class PaymentController
         }
         log.info("=================================================");
         return this.discoveryClient;
+    }
+
+    @GetMapping(value = "/payment/lb")
+    public String getPaymentLB()
+    {
+        return serverPort;
     }
 }
