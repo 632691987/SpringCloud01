@@ -102,6 +102,17 @@ Ribbon 主要是有几条 Rule, 列表如下：
 
 当然，也可以自己写一个 RULE
 ========================================================================================================================
+Open FeignL 声明式接口
+
+就是替代 Ribbon + RestTemplate 的一种方案。是使用在客户端的。
+
+主要原则就是：
+1) 客户端 Controller 还是那个 controller
+2) 客户端 controller 调用的 service 和 服务器端调用的 service 是同样的，但是会加上 @GetMapping
+3) 客户端的 service 相关类要加上 @FeignClient(value = "CLOUD-PAYMENT-SERVICE")
+4) 客户端的主 SpringBoot 类要加上 @EnableFeignClients
+5) Open Feign 默认只等待 1 秒，所以要设置, 也可以定义 log 的级别
+========================================================================================================================
 
 服务调用:
 1, Ribbon ===> Continue update
