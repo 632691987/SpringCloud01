@@ -144,6 +144,17 @@ Gateway 其实是个路由器，里面有三个重要的概念：
 
 ========================================================================================================================
 
+Spring-Cloud-Config
+如果我有三个，四个，十个同样的 payment service, 是不是要逐个更改 mysql server 的属性呢？不应该，这就是为什么 spring cloud config 的由来
+这个分为服务器端和客户端。服务器端直接读取 git 上面的 repository, 然后进行配置就行了。
+
+至于客户端，要使用bootstrap.yml， 为什么呢？因为bootstrap.yml比application.yml更高级，直接从外面读取，例如在这个例子里面，就是从git读取yml 文件再获取项目属性的，相当与在git 读取application.yml。
+记得，每次更新git，都要求维护人对着客户端发送下面的 request
+curl -X POST localhost:3355/actuator/refresh
+
+那么问题又来了，如果我有10个 spring cloud config client, 那么是不是应该发送一百次上面的那个信息的呢？ 那就要使用 spring cloud bus 了
+========================================================================================================================
+
 服务调用:
 1, Ribbon ===> Continue update
 2, LoadBalancer
