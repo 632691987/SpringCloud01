@@ -155,6 +155,15 @@ curl -X POST localhost:3355/actuator/refresh
 那么问题又来了，如果我有10个 spring cloud config client, 那么是不是应该发送一百次上面的那个信息的呢？ 那就要使用 spring cloud bus 了
 ========================================================================================================================
 
+Spring Cloud Bus
+
+目前只支持两种消息代理： RabbitMQ 和 Kafka。在服务器端和客户端加了对 RabbitMQ 的支持以后，就不用再发送上面的了 Request ，因为上面的是逐个发到客户端的，但是这个是直接发到服务器端的
+
+使用了内置的Rabbit MQ 以后，就可以一次推送，所有客户端都得到消息了。但是，怎么样使用定点通知呢？就是说，例如怎么使用其中一个不获取到通知呢？
+localhost:3344/actuator/bus-refresh/config-client:3355
+上面，只通知 spring.application-name = config-client with 3355 port
+========================================================================================================================
+
 服务调用:
 1, Ribbon ===> Continue update
 2, LoadBalancer
