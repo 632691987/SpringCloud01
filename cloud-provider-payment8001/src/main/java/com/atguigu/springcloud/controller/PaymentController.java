@@ -82,4 +82,10 @@ public class PaymentController
         try { TimeUnit.SECONDS.sleep(3); } catch (InterruptedException e) { e.printStackTrace(); }
         return serverPort;
     }
+
+    @GetMapping("/payment/zipkin")
+    public String paymentZipkin()
+    {
+        return "ServerPort: " + serverPort + ": com.atguigu.springcloud.controller.PaymentController.paymentZipkin";
+    }
 }
