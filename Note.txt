@@ -164,6 +164,31 @@ localhost:3344/actuator/bus-refresh/config-client:3355
 上面，只通知 spring.application-name = config-client with 3355 port
 ========================================================================================================================
 
+Spring Cloud Stream
+
+Spring Cloud Stream 的目的是整合 RabbitMQ 和 Apache Kafka, 让自己的代码根本和 RabbitMQ 和 Apache Kafka 的API 不沟通。
+
+当整合的时候，发送端要注意以下的问题：
+1) 相关的类不需要 @Component, 只需要添加 @EnableBinding(Source.class)
+2) 发送的类使用 org.springframework.messaging.MessageChannel
+3) output.send(MessageBuilder.withPayload(serial).build()); 进行发送
+
+当整合的时候，收发端要注意一下的问题：
+1) 相关的类不需要 @Component, 只需要添加 @EnableBinding(Sink.class)
+2) 收发的类相关的函数只需要
+
+    @StreamListener(Sink.INPUT)
+    public void input(Message<String> message)
+    {
+        log.info("Port:" + serverPort + ", Receive message: " + message.getPayload());
+    }
+
+要注意的是，如果不同的模块，在 application.properties 或者 application.yml 不设置相同的 Group 的话，那么会造成重复消费的问题。因为同一个组是竞争的关系。
+
+同时，模块必须要使用一个 group, 如果不设置的话，重启之后是无法收到启动之前发出的信息的。
+
+========================================================================================================================
+
 服务调用:
 1, Ribbon ===> Continue update
 2, LoadBalancer

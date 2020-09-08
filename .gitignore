@@ -5,7 +5,7 @@
 
 # used for ADF styles caching
 temp/
-
+.vscode/
 # default output directories
 classes/
 deploy/
