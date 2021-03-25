@@ -8,10 +8,8 @@ import org.springframework.messaging.MessageChannel;
 
 import com.atguigu.springcloud.service.IMessageProvider;
 import javax.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
 
 @EnableBinding(Source.class) //定义消息的推送管道
-@Slf4j
 public class MessageProviderImpl implements IMessageProvider
 {
     @Resource
@@ -22,7 +20,6 @@ public class MessageProviderImpl implements IMessageProvider
     {
         String serial = UUID.randomUUID().toString();
         output.send(MessageBuilder.withPayload(serial).build());
-        log.info("From MessageChannel, send message: " + serial);
         return null;
     }
 }

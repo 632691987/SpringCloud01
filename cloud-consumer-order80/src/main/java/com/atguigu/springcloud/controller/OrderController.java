@@ -16,10 +16,8 @@ import com.atguigu.springcloud.entities.CommonResult;
 import com.atguigu.springcloud.entities.Payment;
 import com.atguigu.springcloud.lb.LoadBalancer;
 import javax.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController()
-@Slf4j
 public class OrderController
 {
     public static final String PAYMENT_URL = "http://CLOUD-PAYMENT-SERVICE";

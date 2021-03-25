@@ -1,0 +1,140 @@
+==================================================================================================
+
+Scenario 1: 使用 Eureka
+
+建立基础的服务注册器
+cloud-eureka-server7001
+cloud-eureka-server7002
+
+启动下面两个service, 会自动注册到服务器
+cloud-provider-payment8001
+cloud-provider-payment8002
+
+建立一个cloud-consumer-order80，Properties 文件是连接 eureka server的，而自己的restTemplate 连接 payment
+==================================================================================================
+
+Scenario 2: 使用 Zookeeper 代替 Eureka
+
+安装Zookeeper, 并且启动
+cd /home/vincent/software/zookeeper-3.4.9/bin
+./zkServer.sh start
+Optional: 启动客户端, ./zkCli.sh
+
+
+启动下面两个service, 会自动注册到服务器
+cloud-provider-payment8004
+cloud-provider-payment8005
+
+建立一个cloud-consumerzk-order80，Properties 文件是连接 zookeeper server的，而自己的restTemplate 连接 payment
+==================================================================================================
+
+Scenario 3: 使用 consul 代替 Eureka, Zookeeper
+
+安装 Consul, 并且启动
+consul agent -dev
+
+启动完后进入自带的网页：
+http://localhost:8500/ui/dc1/services
+
+启动Payment service, 会主动注册到服务器
+cloud-providerconsul-payment8006
+
+建立一个cloud-consumerconsul-order80，Properties 文件是连接 Consul server的，而自己的restTemplate 连接 payment
+==================================================================================================
+**************************************************************************************************
+三个注册中心的异同点：
+Consul, Zookeeper: CP
+Eureka: AP
+**************************************************************************************************
+==================================================================================================
+
+Scenario 4: 使用 Ribbon
+
+使用完全的 #Scenario 1# 那一套，就能实现 Ribbon 了，endpoint 使用的是 [GET]/consumer/payment/lb
+
+==================================================================================================
+
+Scenario 5: 使用 OpenFeign
+
+建立基础的服务注册器
+cloud-eureka-server7001
+cloud-eureka-server7002
+
+启动下面两个service, 会自动注册到服务器
+cloud-provider-payment8001
+cloud-provider-payment8002
+
+建立一个cloud-consumer-feign-order80，测试的是使用 OpenFeign去连接
+使用的是利用OpenFeign通过Zookeeper ( ###@FeignClient(value = "CLOUD-PAYMENT-SERVICE")### ) 去调用
+
+总结：其实都是通过 Client 调用 Zookeeper 里面的服务，但是使用 OpenFeign 是之需要客户端调用就可以，不用修改 cloud-provider-payment8001 的代码
+
+==================================================================================================
+
+Scenario 6: 使用 Hystrix
+
+建立基础的服务注册器
+cloud-eureka-server7001
+cloud-eureka-server7002
+
+建立 Hytrix 的服务器端
+cloud-provider-hystrix-payment8006
+
+建立 OpenFeign 调用的 Hytrix 的客户端
+cloud-consumer-feign-hystrix-order80
+
+==================================================================================================
+
+Scenario 7: 使用 Hystrix-board
+
+建立基础的服务注册器
+cloud-eureka-server7001
+cloud-eureka-server7002
+
+建立 Hytrix 的服务器端
+cloud-provider-hystrix-payment8006
+
+搭建和启动，cloud-consumer-hystrix-dashboard9001，并且访问网站 http://localhost:9001/hystrix
+然后输入    http://localhost:8006/hystrix.stream
+
+最后启动 cloud-consumer-feign-hystrix-order80
+
+==================================================================================================
+
+Scenario 8: 使用 Gateway
+
+建立基础的服务注册器
+cloud-eureka-server7001
+cloud-eureka-server7002
+
+启动下面两个service, 会自动注册到服务器 (这里代替微服务)
+cloud-provider-payment8001
+cloud-provider-payment8002
+
+在此基础上起 cloud-gateway-gateway9527
+
+结论：基本上都是微服务建立在 Eureka 上注册，然后 Gateway 或者其他 Consumer service 在 Eureka 上面查找
+而 Gateway 的作用是隐藏微服务的真实作用
+
+==================================================================================================
+
+Scenario 8: 使用 Spring Cloud Config 的作用
+
+建立基础的服务注册器
+cloud-eureka-server7001
+cloud-eureka-server7002
+
+啓動配置中心 cloud-config-center-3344 ，配置中心實際上是讀取中間媒介的配置文件，例如 github 上面的
+然後啓動配置客戶端 cloud-config-client-3355, cloud-config-client-3366, 這兩個 Application 就去讀上面的配置中心獲取信息
+
+==================================================================================================
+
+Scenario 8: 使用 Spring Cloud Bus 消息总线
+支持两种： RabbitMQ, 和 Kafka
+
+建立基础的服务注册器
+cloud-eureka-server7001
+cloud-eureka-server7002
+
+啓動配置服务器 cloud-config-center-3344
+啓動配置客戶端 cloud-config-client-3355, cloud-config-client-3366

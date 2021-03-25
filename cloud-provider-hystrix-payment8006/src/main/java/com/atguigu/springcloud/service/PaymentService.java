@@ -7,16 +7,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Slf4j
 public class PaymentService
 {
 
     public String paymentInfo_OK(Integer id)
     {
-        log.info("Thread:" + Thread.currentThread().getName() + " execute [PaymentService.paymentInfo_OK]");
+        System.out.println("Thread:" + Thread.currentThread().getName() + " execute [PaymentService.paymentInfo_OK]");
         return "Thread: [" + Thread.currentThread().getName() + "], function: [PaymentService.paymentInfo_OK], parameter=[id=" + id + "]";
     }
 
@@ -35,7 +33,7 @@ public class PaymentService
         {
             e.printStackTrace();
         }
-        log.info("Thread:" + Thread.currentThread().getName() + " execute [PaymentService.paymentInfo_TimeOut]");
+        System.out.println("Thread:" + Thread.currentThread().getName() + " execute [PaymentService.paymentInfo_TimeOut]");
         return "Thread: [" + Thread.currentThread().getName() + "], function: [PaymentService.paymentInfo_TimeOut], parameter=[id=" + id + "]";
     }
 

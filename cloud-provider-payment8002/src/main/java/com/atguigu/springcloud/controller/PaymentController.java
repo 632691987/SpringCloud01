@@ -16,10 +16,8 @@ import com.atguigu.springcloud.entities.CommonResult;
 import com.atguigu.springcloud.entities.Payment;
 import com.atguigu.springcloud.service.PaymentService;
 import javax.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@Slf4j
 public class PaymentController
 {
     @Resource
@@ -34,7 +32,7 @@ public class PaymentController
     @PostMapping(value = "/payment/create")
     public CommonResult create(@RequestBody  Payment payment) {
         int result = paymentService.create(payment);
-        log.info("Result:" + result);
+        System.out.println("Result:" + result);
         return new CommonResult(result > 0 ? HttpStatus.OK.value(): HttpStatus.NO_CONTENT.value(), "", result);
     }
 
@@ -42,7 +40,7 @@ public class PaymentController
     public CommonResult<Payment> getPaymentById(@PathVariable("id") Long id)
     {
         Payment payment = paymentService.getPaymentById(id);
-        log.info("From server port:" + serverPort);
+        System.out.println("From server port:" + serverPort);
 
         if(payment != null)
         {
@@ -55,18 +53,18 @@ public class PaymentController
     @GetMapping(value = "/payment/discovery")
     public Object discovery() {
         List<String> services = discoveryClient.getServices();//获取所有注册过的服务
-        log.info("=================================================");
-        log.info("Part 1: =========================================");
+        System.out.println("=================================================");
+        System.out.println("Part 1: =========================================");
         for (String service : services) {
-            log.info("**** Service = " + service);
+            System.out.println("**** Service = " + service);
         }
-        log.info("Part 2: =========================================");
+        System.out.println("Part 2: =========================================");
         List<ServiceInstance> list = discoveryClient.getInstances("cloud-payment-service".toUpperCase());
-        log.info("=========================================");
+        System.out.println("=========================================");
         for (ServiceInstance serviceInstance : list) {
-            log.info(serviceInstance.getInstanceId() + "\t" + serviceInstance.getHost() + "\t" + serviceInstance.getPort() + "\t" + serviceInstance.getUri());
+            System.out.println(serviceInstance.getInstanceId() + "\t" + serviceInstance.getHost() + "\t" + serviceInstance.getPort() + "\t" + serviceInstance.getUri());
         }
-        log.info("=================================================");
+        System.out.println("=================================================");
         return this.discoveryClient;
     }
 

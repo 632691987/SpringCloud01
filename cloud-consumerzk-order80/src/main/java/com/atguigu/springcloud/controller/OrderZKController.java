@@ -2,8 +2,6 @@ package com.atguigu.springcloud.controller;
 
 import java.util.List;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +15,6 @@ import javax.annotation.Resource;
  * @create 2020-02-19 15:21
  */
 @RestController
-@Slf4j
 public class OrderZKController
 {
     public static final String INVOKE_URL = "http://cloud-provider-payment";
@@ -38,7 +35,7 @@ public class OrderZKController
             stringBuffer.append(";scheme:" + serviceInstance.getScheme());
             stringBuffer.append(";serviceID:" + serviceInstance.getServiceId());
             stringBuffer.append(";port:" + serviceInstance.getPort());
-            log.info(stringBuffer.toString());
+            System.out.println(stringBuffer.toString());
         }
         return "" + serviceInstances.size();
     }
