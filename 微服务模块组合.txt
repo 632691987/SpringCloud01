@@ -138,3 +138,34 @@ cloud-eureka-server7002
 
 啓動配置服务器 cloud-config-center-3344
 啓動配置客戶端 cloud-config-client-3355, cloud-config-client-3366
+
+==================================================================================================
+
+Scenario 9: 使用 Spring Cloud Stream
+
+建立基础的服务注册器
+cloud-eureka-server7001
+cloud-eureka-server7002
+
+建立消费者和生产者 APP:
+cloud-stream-rabbitmq-provider8801
+cloud-stream-rabbitmq-consumer8802
+cloud-stream-rabbitmq-consumer8803
+
+==================================================================================================
+
+Scenario 10: 使用 Spring Cloud Sleuth
+
+建立基础的服务注册器
+cloud-eureka-server7001
+cloud-eureka-server7002
+
+凭借 cloud-consumerzk-order80 的 /consumer/payment/zipkin endpoint
+调用 cloud-provider-payment8001 的 /payment/zipkin
+
+可以在 zipkin 中获得链路发现 CLOUD-ORDER-SERVICE => CLOUD-PAYMENT-SERVICE
+
+其中 zipkin是从 git clone https://github.com/openzipkin-attic/docker-zipkin.git 拿来的，
+然后里面有个 docker-compose.yml, 所以直接运行 docker run -d -p 9411:9411 openzipkin/zipkin
+
+然后访问 http://localhost:9411/zipkin/

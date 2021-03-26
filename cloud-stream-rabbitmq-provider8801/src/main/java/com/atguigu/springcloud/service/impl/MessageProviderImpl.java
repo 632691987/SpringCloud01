@@ -9,6 +9,11 @@ import org.springframework.messaging.MessageChannel;
 import com.atguigu.springcloud.service.IMessageProvider;
 import javax.annotation.Resource;
 
+/**
+ *
+ * 这里没有 @Service, 注意！！
+ * 因为 @EnableBinding 里面引用了 BindingBeansRegistrar ，它会自动注册
+ */
 @EnableBinding(Source.class) //定义消息的推送管道
 public class MessageProviderImpl implements IMessageProvider
 {
