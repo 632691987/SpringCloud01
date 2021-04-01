@@ -169,3 +169,49 @@ cloud-eureka-server7002
 然后里面有个 docker-compose.yml, 所以直接运行 docker run -d -p 9411:9411 openzipkin/zipkin
 
 然后访问 http://localhost:9411/zipkin/
+
+
+==================================================================================================
+
+Scenario 11: 使用 Nacos注册 Payment
+
+Nacos 就是 Naming and Configuration service 的简称, 注意 Nacos 可以配置成 CP 和 AP, 支持切换
+/**
+如果是普通的注册，那么就选择 AP, 因为可以认为是临时实例，可能一时无法登记上。
+但是如果是记录的，那么就选择 CP
+**/
+
+
+代替 Eureka 做服务注册中心,
+代替 Config 做配置中心
+
+记得，下载后解压缩，进入 nacos/bin 文件夹，然后运行命令 bash startup.sh -m standalone
+网页则进入 http://localhost:8848/nacos/#/login
+
+然后启动 cloudalibaba-provider-payment9001
+然后启动 cloudalibaba-provider-payment9002
+
+==================================================================================================
+
+Scenario 11: 使用 Nacos注册 Config
+
+启动 Nacos 服务器端
+启动 cloudalibaba-config-nacos-client3377
+
+然后在后台相应地创建 nacos-config-client-dev.yaml, 就可以在这个文件里面添加配置 key - value
+
+==================================================================================================
+
+Scenario 11: 使用 Sentinel
+
+1, 去官网下载。https://github.com/alibaba/Sentinel/releases
+2, http://localhost:8080/#/login,
+init acc/pwd: sentinel / sentinel
+
+3, 打开 Nacos 服务器端
+4, 启动 cloudalibaba-sentinel-service8401
+
+实现：
+1, 首先不断地 call /testA 这个 endpoint
+2, 然后在 Sentinel 处增加一个流控规则，然后 /testA 只能每秒运行一次
+3, 在 Restful 浏览器，那么得到 "Blocked by Sentinel (flow limiting)" 的结果 (资源名就直接填 /testA)

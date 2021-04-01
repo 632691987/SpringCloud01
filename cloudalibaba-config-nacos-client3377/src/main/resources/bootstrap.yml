@@ -1,0 +1,23 @@
+# nacos配置
+server:
+  port: 3377
+
+spring:
+  application:
+    name: nacos-config-client
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848 #Nacos服务注册中心地址
+      config:
+        server-addr: localhost:8848 #Nacos作为配置中心地址
+        file-extension: yaml #指定yaml格式的配置
+        group: DEV_GROUP
+        #namespace: 7d8f0f5a-6a53-4785-9686-dd460158e5d4
+        #这个 namespace 是属于 Nacos 的命名空间的 ID, 一个 config 文件只有满足了 namespace, spring.application.name, profile, group 才会读取到
+
+# 这个 config application 将会根据以下公式读取一个文件:
+# ${spring.application.name}-${spring.profile.active}.${spring.cloud.nacos.config.file-extension}
+# = nacos-config-client-dev.yaml
+
+# 所以将要在 Nacos 上创建一个 nacos-config-client-dev.yaml, 并且在文件里面读取 config.info (这是 controller 里面要的)
