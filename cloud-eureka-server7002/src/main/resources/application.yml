@@ -1,6 +1,9 @@
 server:
   port: 7002
-  clust-port1: 7001
+
+spring:
+  application:
+    name: Eureka-Server-1
 
 eureka:
   instance:
